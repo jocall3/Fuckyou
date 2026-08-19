@@ -1,333 +1,5933 @@
-import React, { useContext, useMemo, useState } from 'react';
+<            <div className="grid grid-cols-1 lg:grid-cols-3import React
+
+            <div className="grid grid-cols-1 lg:grid-cols-3import React
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div classNameimport React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div classNameimport React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
 import Card from '../../../Card';
 import { DataContext } from '../../../../context/DataContext';
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import {
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div classNameimport React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import {
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { Access
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
 import { AccessLog } from '../../../../types';
 
-const AccessControlsView: React.FC = () => {
-    const context = useContext(DataContext);
-    if (!context) throw new Error("AccessControlsView must be within a DataProvider");
-    
-    const { accessLogs } = context;
-    const [filter, setFilter] = useState<'all' | 'Success' | 'Failed'>('all');
+export type LogFilterStatus = 'all' | 'Success' | 'Failed
 
-    const filteredLogs = useMemo(() => {
-        return accessLogs.filter(log => filter === 'all' || log.status === filter);
-    }, [accessLogs, filter]);
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
 
-    const kpiData = useMemo(() => ({
-        totalUsers: new Set(accessLogs.map(log => log.user)).size,
-        failedLogins24h: accessLogs.filter(log => log.status === 'Failed').length,
-        highRiskEvents: accessLogs.filter(log => log.riskLevel === 'High').length,
-    }), [accessLogs]);
+export type LogFilterStatus = 'all' | 'Success' | 'Failed
 
-    const chartData = useMemo(() => {
-        const dataByHour: { [key: string]: { success: number, failed: number } } = {};
-        accessLogs.forEach(log => {
-            const hour = new Date(log.timestamp).getHours();
-            const key = `${String(hour).padStart(2, '0')}:00`;
-            if (!dataByHour[key]) dataByHour[key] = { success: 0, failed: 0 };
-            if (log.status === 'Success') dataByHour[key].success++;
-            else dataByHour[key].failed++;
-        });
-        return Object.entries(dataByHour).map(([hour, counts]) => ({ hour, ...counts })).sort((a,b) => a.hour.localeCompare(b.hour));
-    }, [accessLogs]);
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', countimport React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
 
-    const RiskBadge: React.FC<{ level: AccessLog['riskLevel'] }> = ({ level }) => {
-        const colors = {
-            'Low': 'bg-green-500/20 text-green-300',
-            'Medium': 'bg-yellow-500/20 text-yellow-300',
-            'High': 'bg-red-500/20 text-red-300',
-        };
-        return <span className={`px-2 py-1 text-xs font-medium rounded-full ${colors[level]}`}>{level}</span>;
-    };
+export type LogFilterStatus = 'all' | 'Success' | 'Failed
 
-    return (
-        <div className="space-y-6">
-            <h2 className="text-3xl font-bold text-white tracking-wider">Access Controls Dashboard</h2>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <Card className="text-center"><p className="text-3xl font-bold text-white">{kpiData.totalUsers}</p><p className="text-sm text-gray-400 mt-1">Total Users</p></Card>
-                <Card className="text-center"><p className="text-3xl font-bold text-white">25</p><p className="text-sm text-gray-400 mt-1">Active Roles</p></Card>
-                <Card className="text-center"><p className="text-3xl font-bold text-red-400">{kpiData.failedLogins24h}</p><p className="text-sm text-gray-400 mt-1">Failed Logins (24h)</p></Card>
-                <Card className="text-center"><p className="text-3xl font-bold text-orange-400">{kpiData.highRiskEvents}</p><p className="text-sm text-gray-400 mt-1">High-Risk Events (24h)</p></Card>
-            </div>
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High
 
-            <Card title="Login Attempts (Last 24 hours)">
-                <ResponsiveContainer width="100%" height={300}>
-                    <LineChart data={chartData}>
-                        <XAxis dataKey="hour" stroke="#9ca3af" fontSize={12} />
-                        <YAxis stroke="#9ca3af" />
-                        <Tooltip contentStyle={{ backgroundColor: 'rgba(31, 41, 55, 0.8)', borderColor: '#4b5563' }} />
-                        <Legend />
-                        <Line type="monotone" dataKey="success" name="Successful" stroke="#10b981" dot={false} />
-                        <Line type="monotone" dataKey="failed" name="Failed" stroke="#ef4444" dot={false} />
-                    </LineChart>
-                </ResponsiveContainer>
-            </Card>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
 
-            <Card>
-                <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-xl font-semibold text-white">Recent Access Events</h3>
-                     <div className="flex space-x-1 p-1 bg-gray-900/50 rounded-lg">
-                        {(['all', 'Success', 'Failed'] as const).map(status => (
-                            <button key={status} onClick={() => setFilter(status)} className={`px-3 py-1 text-sm rounded-md ${filter === status ? 'bg-cyan-600' : ''}`}>{status}</button>
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.roleimport React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="wimport React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="wimport React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Bi
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers:
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers:
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
                         ))}
                     </div>
-                </div>
-                 <div className="overflow-x-auto">
-                    <table className="w-full text-sm text-left text-gray-400">
-                        <thead className="text-xs text-gray-300 uppercase bg-gray-900/30">
-                            <tr>
-                                <th scope="col" className="px-6 py-3">User</th>
-                                <th scope="col" className="px-6 py-3">IP Address</th>
-                                <th scope="col" className="px-6 py-3">Location</th>
-                                <th scope="col" className="px-6 py-3">Time</th>
-                                <th scope="col" className="px-6 py-3">Status</th>
-                                <th scope="col" className="px-6 py-3">Risk Level</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredLogs.map(log => (
-                                <tr key={log.id} className="border-b border-gray-800 hover:bg-gray-800/50">
-                                    <td className="px-6 py-4 font-medium text-white">{log.user}</td>
-                                    <td className="px-6 py-4 font-mono">{log.ip}</td>
-                                    <td className="px-6 py-4">{log.location}</td>
-                                    <td className="px-6 py-4">{log.timestamp}</td>
-                                    <td className="px-6 py-4"><span className={log.status === 'Success' ? 'text-green-400' : 'text-red-400'}>{log.status}</span></td>
-                                    <td className="px-6 py-4"><RiskBadge level={log.riskLevel} /></td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            </Card>
+                </Card>
+
+                <Card title="import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers:
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 mdimport React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 mdimport React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-90import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-90import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span classNameimport React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span classNameimport React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-4import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-50import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | '
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-50import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | '
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  isExportModalOpen: boolean;
+  currentPage: number;
+  rowsPerPage: number;
+  sortColumn: keyof Extended
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  isExportModalOpen: boolean;
+  currentPage: number;
+  rowsPerPage: number;
+  sortColumn: keyof Extended
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Password Rotations</span>
+                            <div className="mtimport React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  isExportModalOpen: boolean;
+  currentPage: number;
+  rowsPerPage: number;
+  sortColumn: keyof ExtendedAccessLog;
+  sortDirection: 'asc' | 'desc';
+}
+
+export interface SecurityPolicyConfig {
+
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Password Rotations</span>
+                            <div className="mtimport React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  isExportModalOpen: boolean;
+  currentPage: number;
+  rowsPerPage: number;
+  sortColumn: keyof ExtendedAccessLog;
+  sortDirection: 'asc' | 'desc';
+}
+
+export interface SecurityPolicyConfig {
+
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Password Rotations</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-cyan-400">import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  isExportModalOpen: boolean;
+  currentPage: number;
+  rowsPerPage: number;
+  sortColumn: keyof ExtendedAccessLog;
+  sortDirection: 'asc' | 'desc';
+}
+
+export interface SecurityPolicyConfig {
+  id: string;
+  name: string;
+  description: string;
+  enabled: boolean;
+
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Password Rotations</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-cyan-400">import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  isExportModalOpen: boolean;
+  currentPage: number;
+  rowsPerPage: number;
+  sortColumn: keyof ExtendedAccessLog;
+  sortDirection: 'asc' | 'desc';
+}
+
+export interface SecurityPolicyConfig {
+  id: string;
+  name: string;
+  description: string;
+  enabled: boolean;
+
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Password Rotations</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-cyan-400">14.2 Days</span>
+                                <p className="text-xs text-gray-500 mt-1">Average enterpriseimport React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  isExportModalOpen: boolean;
+  currentPage: number;
+  rowsPerPage: number;
+  sortColumn: keyof ExtendedAccessLog;
+  sortDirection: 'asc' | 'desc';
+}
+
+export interface SecurityPolicyConfig {
+  id: string;
+  name: string;
+  description: string;
+  enabled: boolean;
+  severity: RiskLevelType;
+  category: 'Authentication' | 'Network' | 'Session' | 'Compliance';
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Password Rotations</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-cyan-400">14.2 Days</span>
+                                <p className="text-xs text-gray-500 mt-1">Average enterpriseimport React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  isExportModalOpen: boolean;
+  currentPage: number;
+  rowsPerPage: number;
+  sortColumn: keyof ExtendedAccessLog;
+  sortDirection: 'asc' | 'desc';
+}
+
+export interface SecurityPolicyConfig {
+  id: string;
+  name: string;
+  description: string;
+  enabled: boolean;
+  severity: RiskLevelType;
+  category: 'Authentication' | 'Network' | 'Session' | 'Compliance';
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Password Rotations</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-cyan-400">14.2 Days</span>
+                                <p className="text-xs text-gray-500 mt-1">Average enterprise cycle</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  isExportModalOpen: boolean;
+  currentPage: number;
+  rowsPerPage: number;
+  sortColumn: keyof ExtendedAccessLog;
+  sortDirection: 'asc' | 'desc';
+}
+
+export interface SecurityPolicyConfig {
+  id: string;
+  name: string;
+  description: string;
+  enabled: boolean;
+  severity: RiskLevelType;
+  category: 'Authentication' | 'Network' | 'Session' | 'Compliance';
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Password Rotations</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-cyan-400">14.2 Days</span>
+                                <p className="text-xs text-gray-500 mt-1">Average enterprise cycle</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  isExportModalOpen: boolean;
+  currentPage: number;
+  rowsPerPage: number;
+  sortColumn: keyof ExtendedAccessLog;
+  sortDirection: 'asc' | 'desc';
+}
+
+export interface SecurityPolicyConfig {
+  id: string;
+  name: string;
+  description: string;
+  enabled: boolean;
+  severity: RiskLevelType;
+  category: 'Authentication' | 'Network' | 'Session' | 'Compliance';
+}
+
+export const INITIAL_SECURITY_POLICIES: SecurityPolicyConfig[] =
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Password Rotations</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-cyan-400">14.2 Days</span>
+                                <p className="text-xs text-gray-500 mt-1">Average enterprise cycle</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  isExportModalOpen: boolean;
+  currentPage: number;
+  rowsPerPage: number;
+  sortColumn: keyof ExtendedAccessLog;
+  sortDirection: 'asc' | 'desc';
+}
+
+export interface SecurityPolicyConfig {
+  id: string;
+  name: string;
+  description: string;
+  enabled: boolean;
+  severity: RiskLevelType;
+  category: 'Authentication' | 'Network' | 'Session' | 'Compliance';
+}
+
+export const INITIAL_SECURITY_POLICIES: SecurityPolicyConfig[] =
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Password Rotations</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-cyan-400">14.2 Days</span>
+                                <p className="text-xs text-gray-500 mt-1">Average enterprise cycle</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Session Timeimport React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  isExportModalOpen: boolean;
+  currentPage: number;
+  rowsPerPage: number;
+  sortColumn: keyof ExtendedAccessLog;
+  sortDirection: 'asc' | 'desc';
+}
+
+export interface SecurityPolicyConfig {
+  id: string;
+  name: string;
+  description: string;
+  enabled: boolean;
+  severity: RiskLevelType;
+  category: 'Authentication' | 'Network' | 'Session' | 'Compliance';
+}
+
+export const INITIAL_SECURITY_POLICIES: SecurityPolicyConfig[] =
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Password Rotations</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-cyan-400">14.2 Days</span>
+                                <p className="text-xs text-gray-500 mt-1">Average enterprise cycle</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Session Timeouts</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  isExportModalOpen: boolean;
+  currentPage: number;
+  rowsPerPage: number;
+  sortColumn: keyof ExtendedAccessLog;
+  sortDirection: 'asc' | 'desc';
+}
+
+export interface SecurityPolicyConfig {
+  id: string;
+  name: string;
+  description: string;
+  enabled: boolean;
+  severity: RiskLevelType;
+  category: 'Authentication' | 'Network' | 'Session' | 'Compliance';
+}
+
+export const INITIAL_SECURITY_POLICIES: SecurityPolicyConfig[] = [
+  { id: 'pol-1', name: 'Enforce Hardware MFA', description: 'Require WebAuthn or FIDO2 keys for administrative access.', enabled: true, severity: 'Critical', category: 'Authentication' },
+  { id: 'pol-2', name: '
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Password Rotations</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-cyan-400">14.2 Days</span>
+                                <p className="text-xs text-gray-500 mt-1">Average enterprise cycle</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Session Timeouts</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  isExportModalOpen: boolean;
+  currentPage: number;
+  rowsPerPage: number;
+  sortColumn: keyof ExtendedAccessLog;
+  sortDirection: 'asc' | 'desc';
+}
+
+export interface SecurityPolicyConfig {
+  id: string;
+  name: string;
+  description: string;
+  enabled: boolean;
+  severity: RiskLevelType;
+  category: 'Authentication' | 'Network' | 'Session' | 'Compliance';
+}
+
+export const INITIAL_SECURITY_POLICIES: SecurityPolicyConfig[] = [
+  { id: 'pol-1', name: 'Enforce Hardware MFA', description: 'Require WebAuthn or FIDO2 keys for administrative access.', enabled: true, severity: 'Critical', category: 'Authentication' },
+  { id: 'pol-2', name: '
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Password Rotations</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-cyan-400">14.2 Days</span>
+                                <p className="text-xs text-gray-500 mt-1">Average enterprise cycle</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Session Timeouts</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-yellow-400">15 Mins</span>
+                                <p className="text-xs text-gray-5import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  isExportModalOpen: boolean;
+  currentPage: number;
+  rowsPerPage: number;
+  sortColumn: keyof ExtendedAccessLog;
+  sortDirection: 'asc' | 'desc';
+}
+
+export interface SecurityPolicyConfig {
+  id: string;
+  name: string;
+  description: string;
+  enabled: boolean;
+  severity: RiskLevelType;
+  category: 'Authentication' | 'Network' | 'Session' | 'Compliance';
+}
+
+export const INITIAL_SECURITY_POLICIES: SecurityPolicyConfig[] = [
+  { id: 'pol-1', name: 'Enforce Hardware MFA', description: 'Require WebAuthn or FIDO2 keys for administrative access.', enabled: true, severity: 'Critical', category: 'Authentication' },
+  { id: 'pol-2', name: 'Geo-Velocity Anomaly Check', description: 'Flag impossible travel sequences between successive login events.', enabled: true, severity
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Password Rotations</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-cyan-400">14.2 Days</span>
+                                <p className="text-xs text-gray-500 mt-1">Average enterprise cycle</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Session Timeouts</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-yellow-400">15 Mins</span>
+                                <p className="text-xs text-gray-5import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  isExportModalOpen: boolean;
+  currentPage: number;
+  rowsPerPage: number;
+  sortColumn: keyof ExtendedAccessLog;
+  sortDirection: 'asc' | 'desc';
+}
+
+export interface SecurityPolicyConfig {
+  id: string;
+  name: string;
+  description: string;
+  enabled: boolean;
+  severity: RiskLevelType;
+  category: 'Authentication' | 'Network' | 'Session' | 'Compliance';
+}
+
+export const INITIAL_SECURITY_POLICIES: SecurityPolicyConfig[] = [
+  { id: 'pol-1', name: 'Enforce Hardware MFA', description: 'Require WebAuthn or FIDO2 keys for administrative access.', enabled: true, severity: 'Critical', category: 'Authentication' },
+  { id: 'pol-2', name: 'Geo-Velocity Anomaly Check', description: 'Flag impossible travel sequences between successive login events.', enabled: true, severity
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Password Rotations</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-cyan-400">14.2 Days</span>
+                                <p className="text-xs text-gray-500 mt-1">Average enterprise cycle</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Session Timeouts</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-yellow-400">15 Mins</span>
+                                <p className="text-xs text-gray-500 mt-1">Strict idle threshold</p>
+                            </div>
+                        </div>
+                    </div>
+                    <import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  isExportModalOpen: boolean;
+  currentPage: number;
+  rowsPerPage: number;
+  sortColumn: keyof ExtendedAccessLog;
+  sortDirection: 'asc' | 'desc';
+}
+
+export interface SecurityPolicyConfig {
+  id: string;
+  name: string;
+  description: string;
+  enabled: boolean;
+  severity: RiskLevelType;
+  category: 'Authentication' | 'Network' | 'Session' | 'Compliance';
+}
+
+export const INITIAL_SECURITY_POLICIES: SecurityPolicyConfig[] = [
+  { id: 'pol-1', name: 'Enforce Hardware MFA', description: 'Require WebAuthn or FIDO2 keys for administrative access.', enabled: true, severity: 'Critical', category: 'Authentication' },
+  { id: 'pol-2', name: 'Geo-Velocity Anomaly Check', description: 'Flag impossible travel sequences between successive login events.', enabled: true, severity: 'High', category: 'Network' },
+  { id: 'pol-3', name: 'Automatic Session Termination
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Password Rotations</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-cyan-400">14.2 Days</span>
+                                <p className="text-xs text-gray-500 mt-1">Average enterprise cycle</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Session Timeouts</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-yellow-400">15 Mins</span>
+                                <p className="text-xs text-gray-500 mt-1">Strict idle threshold</p>
+                            </div>
+                        </div>
+                    </div>
+                    <import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  isExportModalOpen: boolean;
+  currentPage: number;
+  rowsPerPage: number;
+  sortColumn: keyof ExtendedAccessLog;
+  sortDirection: 'asc' | 'desc';
+}
+
+export interface SecurityPolicyConfig {
+  id: string;
+  name: string;
+  description: string;
+  enabled: boolean;
+  severity: RiskLevelType;
+  category: 'Authentication' | 'Network' | 'Session' | 'Compliance';
+}
+
+export const INITIAL_SECURITY_POLICIES: SecurityPolicyConfig[] = [
+  { id: 'pol-1', name: 'Enforce Hardware MFA', description: 'Require WebAuthn or FIDO2 keys for administrative access.', enabled: true, severity: 'Critical', category: 'Authentication' },
+  { id: 'pol-2', name: 'Geo-Velocity Anomaly Check', description: 'Flag impossible travel sequences between successive login events.', enabled: true, severity: 'High', category: 'Network' },
+  { id: 'pol-3', name: 'Automatic Session Termination
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Password Rotations</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-cyan-400">14.2 Days</span>
+                                <p className="text-xs text-gray-500 mt-1">Average enterprise cycle</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Session Timeouts</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-yellow-400">15 Mins</span>
+                                <p className="text-xs text-gray-500 mt-1">Strict idle threshold</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="mt-6 pt-4 border-t border-gray-800 flex items-center justify-between textimport React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  isExportModalOpen: boolean;
+  currentPage: number;
+  rowsPerPage: number;
+  sortColumn: keyof ExtendedAccessLog;
+  sortDirection: 'asc' | 'desc';
+}
+
+export interface SecurityPolicyConfig {
+  id: string;
+  name: string;
+  description: string;
+  enabled: boolean;
+  severity: RiskLevelType;
+  category: 'Authentication' | 'Network' | 'Session' | 'Compliance';
+}
+
+export const INITIAL_SECURITY_POLICIES: SecurityPolicyConfig[] = [
+  { id: 'pol-1', name: 'Enforce Hardware MFA', description: 'Require WebAuthn or FIDO2 keys for administrative access.', enabled: true, severity: 'Critical', category: 'Authentication' },
+  { id: 'pol-2', name: 'Geo-Velocity Anomaly Check', description: 'Flag impossible travel sequences between successive login events.', enabled: true, severity: 'High', category: 'Network' },
+  { id: 'pol-3', name: 'Automatic Session Termination', description: 'Kill active sessions after 8 hours of continuous inactivity.', enabled: true, severity: 'Medium', category
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Password Rotations</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-cyan-400">14.2 Days</span>
+                                <p className="text-xs text-gray-500 mt-1">Average enterprise cycle</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Session Timeouts</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-yellow-400">15 Mins</span>
+                                <p className="text-xs text-gray-500 mt-1">Strict idle threshold</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="mt-6 pt-4 border-t border-gray-800 flex items-center justify-between textimport React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  isExportModalOpen: boolean;
+  currentPage: number;
+  rowsPerPage: number;
+  sortColumn: keyof ExtendedAccessLog;
+  sortDirection: 'asc' | 'desc';
+}
+
+export interface SecurityPolicyConfig {
+  id: string;
+  name: string;
+  description: string;
+  enabled: boolean;
+  severity: RiskLevelType;
+  category: 'Authentication' | 'Network' | 'Session' | 'Compliance';
+}
+
+export const INITIAL_SECURITY_POLICIES: SecurityPolicyConfig[] = [
+  { id: 'pol-1', name: 'Enforce Hardware MFA', description: 'Require WebAuthn or FIDO2 keys for administrative access.', enabled: true, severity: 'Critical', category: 'Authentication' },
+  { id: 'pol-2', name: 'Geo-Velocity Anomaly Check', description: 'Flag impossible travel sequences between successive login events.', enabled: true, severity: 'High', category: 'Network' },
+  { id: 'pol-3', name: 'Automatic Session Termination', description: 'Kill active sessions after 8 hours of continuous inactivity.', enabled: true, severity: 'Medium', category: 'Session' },
+  { id: 'pol-4', name: 'Strict IP Whitelisting', description: 'Restrict
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Password Rotations</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-cyan-400">14.2 Days</span>
+                                <p className="text-xs text-gray-500 mt-1">Average enterprise cycle</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Session Timeouts</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-yellow-400">15 Mins</span>
+                                <p className="text-xs text-gray-500 mt-1">Strict idle threshold</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="mt-6 pt-4 border-t border-gray-800 flex items-center justify-between textimport React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  isExportModalOpen: boolean;
+  currentPage: number;
+  rowsPerPage: number;
+  sortColumn: keyof ExtendedAccessLog;
+  sortDirection: 'asc' | 'desc';
+}
+
+export interface SecurityPolicyConfig {
+  id: string;
+  name: string;
+  description: string;
+  enabled: boolean;
+  severity: RiskLevelType;
+  category: 'Authentication' | 'Network' | 'Session' | 'Compliance';
+}
+
+export const INITIAL_SECURITY_POLICIES: SecurityPolicyConfig[] = [
+  { id: 'pol-1', name: 'Enforce Hardware MFA', description: 'Require WebAuthn or FIDO2 keys for administrative access.', enabled: true, severity: 'Critical', category: 'Authentication' },
+  { id: 'pol-2', name: 'Geo-Velocity Anomaly Check', description: 'Flag impossible travel sequences between successive login events.', enabled: true, severity: 'High', category: 'Network' },
+  { id: 'pol-3', name: 'Automatic Session Termination', description: 'Kill active sessions after 8 hours of continuous inactivity.', enabled: true, severity: 'Medium', category: 'Session' },
+  { id: 'pol-4', name: 'Strict IP Whitelisting', description: 'Restrict
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Password Rotations</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-cyan-400">14.2 Days</span>
+                                <p className="text-xs text-gray-500 mt-1">Average enterprise cycle</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Session Timeouts</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-yellow-400">15 Mins</span>
+                                <p className="text-xs text-gray-500 mt-1">Strict idle threshold</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="mt-6 pt-4 border-t border-gray-800 flex items-center justify-between text-xs text-gray-400">
+                        <span>Last automated compliance audit: Today at 04:00 UTC</span>import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  isExportModalOpen: boolean;
+  currentPage: number;
+  rowsPerPage: number;
+  sortColumn: keyof ExtendedAccessLog;
+  sortDirection: 'asc' | 'desc';
+}
+
+export interface SecurityPolicyConfig {
+  id: string;
+  name: string;
+  description: string;
+  enabled: boolean;
+  severity: RiskLevelType;
+  category: 'Authentication' | 'Network' | 'Session' | 'Compliance';
+}
+
+export const INITIAL_SECURITY_POLICIES: SecurityPolicyConfig[] = [
+  { id: 'pol-1', name: 'Enforce Hardware MFA', description: 'Require WebAuthn or FIDO2 keys for administrative access.', enabled: true, severity: 'Critical', category: 'Authentication' },
+  { id: 'pol-2', name: 'Geo-Velocity Anomaly Check', description: 'Flag impossible travel sequences between successive login events.', enabled: true, severity: 'High', category: 'Network' },
+  { id: 'pol-3', name: 'Automatic Session Termination', description: 'Kill active sessions after 8 hours of continuous inactivity.', enabled: true, severity: 'Medium', category: 'Session' },
+  { id: 'pol-4', name: 'Strict IP Whitelisting', description: 'Restrict
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Password Rotations</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-cyan-400">14.2 Days</span>
+                                <p className="text-xs text-gray-500 mt-1">Average enterprise cycle</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Session Timeouts</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-yellow-400">15 Mins</span>
+                                <p className="text-xs text-gray-500 mt-1">Strict idle threshold</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="mt-6 pt-4 border-t border-gray-800 flex items-center justify-between text-xs text-gray-400">
+                        <span>Last automated compliance audit: Today at 04:00 UTC</span>
+                        <button 
+                            onClick={() => alert("Initiating manual security posture scan...")}
+                            className="px-3import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  isExportModalOpen: boolean;
+  currentPage: number;
+  rowsPerPage: number;
+  sortColumn: keyof ExtendedAccessLog;
+  sortDirection: 'asc' | 'desc';
+}
+
+export interface SecurityPolicyConfig {
+  id: string;
+  name: string;
+  description: string;
+  enabled: boolean;
+  severity: RiskLevelType;
+  category: 'Authentication' | 'Network' | 'Session' | 'Compliance';
+}
+
+export const INITIAL_SECURITY_POLICIES: SecurityPolicyConfig[] = [
+  { id: 'pol-1', name: 'Enforce Hardware MFA', description: 'Require WebAuthn or FIDO2 keys for administrative access.', enabled: true, severity: 'Critical', category: 'Authentication' },
+  { id: 'pol-2', name: 'Geo-Velocity Anomaly Check', description: 'Flag impossible travel sequences between successive login events.', enabled: true, severity: 'High', category: 'Network' },
+  { id: 'pol-3', name: 'Automatic Session Termination', description: 'Kill active sessions after 8 hours of continuous inactivity.', enabled: true, severity: 'Medium', category: 'Session' },
+  { id: 'pol-4', name: 'Strict IP Whitelisting', description: 'Restrict database cluster access to corporate VPN ranges.', enabled: false, severity: 'Critical', category: 'Compliance' },
+];
+
+export const
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Password Rotations</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-cyan-400">14.2 Days</span>
+                                <p className="text-xs text-gray-500 mt-1">Average enterprise cycle</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Session Timeouts</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-yellow-400">15 Mins</span>
+                                <p className="text-xs text-gray-500 mt-1">Strict idle threshold</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="mt-6 pt-4 border-t border-gray-800 flex items-center justify-between text-xs text-gray-400">
+                        <span>Last automated compliance audit: Today at 04:00 UTC</span>
+                        <button 
+                            onClick={() => alert("Initiating manual security posture scan...")}
+                            className="px-3import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  isExportModalOpen: boolean;
+  currentPage: number;
+  rowsPerPage: number;
+  sortColumn: keyof ExtendedAccessLog;
+  sortDirection: 'asc' | 'desc';
+}
+
+export interface SecurityPolicyConfig {
+  id: string;
+  name: string;
+  description: string;
+  enabled: boolean;
+  severity: RiskLevelType;
+  category: 'Authentication' | 'Network' | 'Session' | 'Compliance';
+}
+
+export const INITIAL_SECURITY_POLICIES: SecurityPolicyConfig[] = [
+  { id: 'pol-1', name: 'Enforce Hardware MFA', description: 'Require WebAuthn or FIDO2 keys for administrative access.', enabled: true, severity: 'Critical', category: 'Authentication' },
+  { id: 'pol-2', name: 'Geo-Velocity Anomaly Check', description: 'Flag impossible travel sequences between successive login events.', enabled: true, severity: 'High', category: 'Network' },
+  { id: 'pol-3', name: 'Automatic Session Termination', description: 'Kill active sessions after 8 hours of continuous inactivity.', enabled: true, severity: 'Medium', category: 'Session' },
+  { id: 'pol-4', name: 'Strict IP Whitelisting', description: 'Restrict database cluster access to corporate VPN ranges.', enabled: false, severity: 'Critical', category: 'Compliance' },
+];
+
+export const
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Password Rotations</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-cyan-400">14.2 Days</span>
+                                <p className="text-xs text-gray-500 mt-1">Average enterprise cycle</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Session Timeouts</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-yellow-400">15 Mins</span>
+                                <p className="text-xs text-gray-500 mt-1">Strict idle threshold</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="mt-6 pt-4 border-t border-gray-800 flex items-center justify-between text-xs text-gray-400">
+                        <span>Last automated compliance audit: Today at 04:00 UTC</span>
+                        <button 
+                            onClick={() => alert("Initiating manual security posture scan...")}
+                            className="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-whiteimport React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  isExportModalOpen: boolean;
+  currentPage: number;
+  rowsPerPage: number;
+  sortColumn: keyof ExtendedAccessLog;
+  sortDirection: 'asc' | 'desc';
+}
+
+export interface SecurityPolicyConfig {
+  id: string;
+  name: string;
+  description: string;
+  enabled: boolean;
+  severity: RiskLevelType;
+  category: 'Authentication' | 'Network' | 'Session' | 'Compliance';
+}
+
+export const INITIAL_SECURITY_POLICIES: SecurityPolicyConfig[] = [
+  { id: 'pol-1', name: 'Enforce Hardware MFA', description: 'Require WebAuthn or FIDO2 keys for administrative access.', enabled: true, severity: 'Critical', category: 'Authentication' },
+  { id: 'pol-2', name: 'Geo-Velocity Anomaly Check', description: 'Flag impossible travel sequences between successive login events.', enabled: true, severity: 'High', category: 'Network' },
+  { id: 'pol-3', name: 'Automatic Session Termination', description: 'Kill active sessions after 8 hours of continuous inactivity.', enabled: true, severity: 'Medium', category: 'Session' },
+  { id: 'pol-4', name: 'Strict IP Whitelisting', description: 'Restrict database cluster access to corporate VPN ranges.', enabled: false, severity: 'Critical', category: 'Compliance' },
+];
+
+export const RISK_LEVEL_COLORS: Record<RiskLevelType, { badge: string; text: string; border: string }> =
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Password Rotations</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-cyan-400">14.2 Days</span>
+                                <p className="text-xs text-gray-500 mt-1">Average enterprise cycle</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Session Timeouts</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-yellow-400">15 Mins</span>
+                                <p className="text-xs text-gray-500 mt-1">Strict idle threshold</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="mt-6 pt-4 border-t border-gray-800 flex items-center justify-between text-xs text-gray-400">
+                        <span>Last automated compliance audit: Today at 04:00 UTC</span>
+                        <button 
+                            onClick={() => alert("Initiating manual security posture scan...")}
+                            className="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-whiteimport React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  isExportModalOpen: boolean;
+  currentPage: number;
+  rowsPerPage: number;
+  sortColumn: keyof ExtendedAccessLog;
+  sortDirection: 'asc' | 'desc';
+}
+
+export interface SecurityPolicyConfig {
+  id: string;
+  name: string;
+  description: string;
+  enabled: boolean;
+  severity: RiskLevelType;
+  category: 'Authentication' | 'Network' | 'Session' | 'Compliance';
+}
+
+export const INITIAL_SECURITY_POLICIES: SecurityPolicyConfig[] = [
+  { id: 'pol-1', name: 'Enforce Hardware MFA', description: 'Require WebAuthn or FIDO2 keys for administrative access.', enabled: true, severity: 'Critical', category: 'Authentication' },
+  { id: 'pol-2', name: 'Geo-Velocity Anomaly Check', description: 'Flag impossible travel sequences between successive login events.', enabled: true, severity: 'High', category: 'Network' },
+  { id: 'pol-3', name: 'Automatic Session Termination', description: 'Kill active sessions after 8 hours of continuous inactivity.', enabled: true, severity: 'Medium', category: 'Session' },
+  { id: 'pol-4', name: 'Strict IP Whitelisting', description: 'Restrict database cluster access to corporate VPN ranges.', enabled: false, severity: 'Critical', category: 'Compliance' },
+];
+
+export const RISK_LEVEL_COLORS: Record<RiskLevelType, { badge: string; text: string; border: string }> = {
+  Low: { badge: 'bg-green-500/20 text-green-300', text
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Password Rotations</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-cyan-400">14.2 Days</span>
+                                <p className="text-xs text-gray-500 mt-1">Average enterprise cycle</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Session Timeouts</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-yellow-400">15 Mins</span>
+                                <p className="text-xs text-gray-500 mt-1">Strict idle threshold</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="mt-6 pt-4 border-t border-gray-800 flex items-center justify-between text-xs text-gray-400">
+                        <span>Last automated compliance audit: Today at 04:00 UTC</span>
+                        <button 
+                            onClick={() => alert("Initiating manual security posture scan...")}
+                            className="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-whiteimport React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  isExportModalOpen: boolean;
+  currentPage: number;
+  rowsPerPage: number;
+  sortColumn: keyof ExtendedAccessLog;
+  sortDirection: 'asc' | 'desc';
+}
+
+export interface SecurityPolicyConfig {
+  id: string;
+  name: string;
+  description: string;
+  enabled: boolean;
+  severity: RiskLevelType;
+  category: 'Authentication' | 'Network' | 'Session' | 'Compliance';
+}
+
+export const INITIAL_SECURITY_POLICIES: SecurityPolicyConfig[] = [
+  { id: 'pol-1', name: 'Enforce Hardware MFA', description: 'Require WebAuthn or FIDO2 keys for administrative access.', enabled: true, severity: 'Critical', category: 'Authentication' },
+  { id: 'pol-2', name: 'Geo-Velocity Anomaly Check', description: 'Flag impossible travel sequences between successive login events.', enabled: true, severity: 'High', category: 'Network' },
+  { id: 'pol-3', name: 'Automatic Session Termination', description: 'Kill active sessions after 8 hours of continuous inactivity.', enabled: true, severity: 'Medium', category: 'Session' },
+  { id: 'pol-4', name: 'Strict IP Whitelisting', description: 'Restrict database cluster access to corporate VPN ranges.', enabled: false, severity: 'Critical', category: 'Compliance' },
+];
+
+export const RISK_LEVEL_COLORS: Record<RiskLevelType, { badge: string; text: string; border: string }> = {
+  Low: { badge: 'bg-green-500/20 text-green-300', text
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Password Rotations</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-cyan-400">14.2 Days</span>
+                                <p className="text-xs text-gray-500 mt-1">Average enterprise cycle</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Session Timeouts</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-yellow-400">15 Mins</span>
+                                <p className="text-xs text-gray-500 mt-1">Strict idle threshold</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="mt-6 pt-4 border-t border-gray-800 flex items-center justify-between text-xs text-gray-400">
+                        <span>Last automated compliance audit: Today at 04:00 UTC</span>
+                        <button 
+                            onClick={() => alert("Initiating manual security posture scan...")}
+                            className="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-white rounded-md transition-colors font-medium"
+                        >
+                            Run Audit Scan
+                        </button>
+                    </div>
+                </import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  isExportModalOpen: boolean;
+  currentPage: number;
+  rowsPerPage: number;
+  sortColumn: keyof ExtendedAccessLog;
+  sortDirection: 'asc' | 'desc';
+}
+
+export interface SecurityPolicyConfig {
+  id: string;
+  name: string;
+  description: string;
+  enabled: boolean;
+  severity: RiskLevelType;
+  category: 'Authentication' | 'Network' | 'Session' | 'Compliance';
+}
+
+export const INITIAL_SECURITY_POLICIES: SecurityPolicyConfig[] = [
+  { id: 'pol-1', name: 'Enforce Hardware MFA', description: 'Require WebAuthn or FIDO2 keys for administrative access.', enabled: true, severity: 'Critical', category: 'Authentication' },
+  { id: 'pol-2', name: 'Geo-Velocity Anomaly Check', description: 'Flag impossible travel sequences between successive login events.', enabled: true, severity: 'High', category: 'Network' },
+  { id: 'pol-3', name: 'Automatic Session Termination', description: 'Kill active sessions after 8 hours of continuous inactivity.', enabled: true, severity: 'Medium', category: 'Session' },
+  { id: 'pol-4', name: 'Strict IP Whitelisting', description: 'Restrict database cluster access to corporate VPN ranges.', enabled: false, severity: 'Critical', category: 'Compliance' },
+];
+
+export const RISK_LEVEL_COLORS: Record<RiskLevelType, { badge: string; text: string; border: string }> = {
+  Low: { badge: 'bg-green-500/20 text-green-300', text
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Password Rotations</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-cyan-400">14.2 Days</span>
+                                <p className="text-xs text-gray-500 mt-1">Average enterprise cycle</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Session Timeouts</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-yellow-400">15 Mins</span>
+                                <p className="text-xs text-gray-500 mt-1">Strict idle threshold</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="mt-6 pt-4 border-t border-gray-800 flex items-center justify-between text-xs text-gray-400">
+                        <span>Last automated compliance audit: Today at 04:00 UTC</span>
+                        <button 
+                            onClick={() => alert("Initiating manual security posture scan...")}
+                            className="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-white rounded-md transition-colors font-medium"
+                        >
+                            Run Audit Scan
+                        </button>
+                    </div>
+                </Card>
+            </div>
         </div>
     );
 };
 
-export default AccessControlsView;
-
-
-// --- CONSOLIDATED FROM: ./views/megadashboard/security/AccessControlsView.tsx ---
-
-import React, { useContext, useMemo, useState } from 'react';
+export default AccessControlsView;import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
 import Card from '../../../Card';
 import { DataContext } from '../../../../context/DataContext';
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
 import { AccessLog } from '../../../../types';
 
-const AccessControlsView: React.FC = () => {
-    const context = useContext(DataContext);
-    if (!context) throw new Error("AccessControlsView must be within a DataProvider");
-    
-    const { accessLogs } = context;
-    const [filter, setFilter] = useState<'all' | 'Success' | 'Failed'>('all');
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
 
-    const filteredLogs = useMemo(() => {
-        return accessLogs.filter(log => filter === 'all' || log.status === filter);
-    }, [accessLogs, filter]);
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
 
-    const kpiData = useMemo(() => ({
-        totalUsers: new Set(accessLogs.map(log => log.user)).size,
-        failedLogins24h: accessLogs.filter(log => log.status === 'Failed').length,
-        highRiskEvents: accessLogs.filter(log => log.riskLevel === 'High').length,
-    }), [accessLogs]);
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
 
-    const chartData = useMemo(() => {
-        const dataByHour: { [key: string]: { success: number, failed: number } } = {};
-        accessLogs.forEach(log => {
-            const hour = new Date(log.timestamp).getHours();
-            const key = `${String(hour).padStart(2, '0')}:00`;
-            if (!dataByHour[key]) dataByHour[key] = { success: 0, failed: 0 };
-            if (log.status === 'Success') dataByHour[key].success++;
-            else dataByHour[key].failed++;
-        });
-        return Object.entries(dataByHour).map(([hour, counts]) => ({ hour, ...counts })).sort((a,b) => a.hour.localeCompare(b.hour));
-    }, [accessLogs]);
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
 
-    const RiskBadge: React.FC<{ level: AccessLog['riskLevel'] }> = ({ level }) => {
-        const colors = {
-            'Low': 'bg-green-500/20 text-green-300',
-            'Medium': 'bg-yellow-500/20 text-yellow-300',
-            'High': 'bg-red-500/20 text-red-300',
-        };
-        return <span className={`px-2 py-1 text-xs font-medium rounded-full ${colors[level]}`}>{level}</span>;
-    };
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  isExportModalOpen: boolean;
+  currentPage: number;
+  rowsPerPage: number;
+  sortColumn: keyof ExtendedAccessLog;
+  sortDirection: 'asc' | 'desc';
+}
 
-    return (
-        <div className="space-y-6">
-            <h2 className="text-3xl font-bold text-white tracking-wider">Access Controls Dashboard</h2>
+export interface SecurityPolicyConfig {
+  id: string;
+  name: string;
+  description: string;
+  enabled: boolean;
+  severity: RiskLevelType;
+  category: 'Authentication' | 'Network' | 'Session' | 'Compliance';
+}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <Card className="text-center"><p className="text-3xl font-bold text-white">{kpiData.totalUsers}</p><p className="text-sm text-gray-400 mt-1">Total Users</p></Card>
-                <Card className="text-center"><p className="text-3xl font-bold text-white">25</p><p className="text-sm text-gray-400 mt-1">Active Roles</p></Card>
-                <Card className="text-center"><p className="text-3xl font-bold text-red-400">{kpiData.failedLogins24h}</p><p className="text-sm text-gray-400 mt-1">Failed Logins (24h)</p></Card>
-                <Card className="text-center"><p className="text-3xl font-bold text-orange-400">{kpiData.highRiskEvents}</p><p className="text-sm text-gray-400 mt-1">High-Risk Events (24h)</p></Card>
-            </div>
+export const INITIAL_SECURITY_POLICIES: SecurityPolicyConfig[] = [
+  { id: 'pol-1', name: 'Enforce Hardware MFA', description: 'Require WebAuthn or FIDO2 keys for administrative access.', enabled: true, severity: 'Critical', category: 'Authentication' },
+  { id: 'pol-2', name: 'Geo-Velocity Anomaly Check', description: 'Flag impossible travel sequences between successive login events.', enabled: true, severity: 'High', category: 'Network' },
+  { id: 'pol-3', name: 'Automatic Session Termination', description: 'Kill active sessions after 8 hours of continuous inactivity.', enabled: true, severity: 'Medium', category: 'Session' },
+  { id: 'pol-4', name: 'Strict IP Whitelisting', description: 'Restrict database cluster access to corporate VPN ranges.', enabled: false, severity: 'Critical', category: 'Compliance' },
+];
 
-            <Card title="Login Attempts (Last 24 hours)">
-                <ResponsiveContainer width="100%" height={300}>
-                    <LineChart data={chartData}>
-                        <XAxis dataKey="hour" stroke="#9ca3af" fontSize={12} />
-                        <YAxis stroke="#9ca3af" />
-                        <Tooltip contentStyle={{ backgroundColor: 'rgba(31, 41, 55, 0.8)', borderColor: '#4b5563' }} />
-                        <Legend />
-                        <Line type="monotone" dataKey="success" name="Successful" stroke="#10b981" dot={false} />
-                        <Line type="monotone" dataKey="failed" name="Failed" stroke="#ef4444" dot={false} />
-                    </LineChart>
-                </ResponsiveContainer>
-            </Card>
+export const RISK_LEVEL_COLORS: Record<RiskLevelType, { badge: string; text: string; border: string }> = {
+  Low: { badge: 'bg-green-500/20 text-green-300', text: 'text-green-400', border: 'border-green-500/30'
 
-            <Card>
-                <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-xl font-semibold text-white">Recent Access Events</h3>
-                     <div className="flex space-x-1 p-1 bg-gray-900/50 rounded-lg">
-                        {(['all', 'Success', 'Failed'] as const).map(status => (
-                            <button key={status} onClick={() => setFilter(status)} className={`px-3 py-1 text-sm rounded-md ${filter === status ? 'bg-cyan-600' : ''}`}>{status}</button>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
                         ))}
                     </div>
-                </div>
-                 <div className="overflow-x-auto">
-                    <table className="w-full text-sm text-left text-gray-400">
-                        <thead className="text-xs text-gray-300 uppercase bg-gray-900/30">
-                            <tr>
-                                <th scope="col" className="px-6 py-3">User</th>
-                                <th scope="col" className="px-6 py-3">IP Address</th>
-                                <th scope="col" className="px-6 py-3">Location</th>
-                                <th scope="col" className="px-6 py-3">Time</th>
-                                <th scope="col" className="px-6 py-3">Status</th>
-                                <th scope="col" className="px-6 py-3">Risk Level</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredLogs.map(log => (
-                                <tr key={log.id} className="border-b border-gray-800 hover:bg-gray-800/50">
-                                    <td className="px-6 py-4 font-medium text-white">{log.user}</td>
-                                    <td className="px-6 py-4 font-mono">{log.ip}</td>
-                                    <td className="px-6 py-4">{log.location}</td>
-                                    <td className="px-6 py-4">{log.timestamp}</td>
-                                    <td className="px-6 py-4"><span className={log.status === 'Success' ? 'text-green-400' : 'text-red-400'}>{log.status}</span></td>
-                                    <td className="px-6 py-4"><RiskBadge level={log.riskLevel} /></td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            </Card>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Password Rotations</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-cyan-400">14.2 Days</span>
+                                <p className="text-xs text-gray-500 mt-1">Average enterprise cycle</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Session Timeouts</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-yellow-400">15 Mins</span>
+                                <p className="text-xs text-gray-500 mt-1">Strict idle threshold</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="mt-6 pt-4 border-t border-gray-800 flex items-center justify-between text-xs text-gray-400">
+                        <span>Last automated compliance audit: Today at 04:00 UTC</span>
+                        <button 
+                            onClick={() => alert("Initiating manual security posture scan...")}
+                            className="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-white rounded-md transition-colors font-medium"
+                        >
+                            Run Audit Scan
+                        </button>
+                    </div>
+                </Card>
+            </div>
         </div>
     );
 };
 
-export default AccessControlsView;
-
-
-// --- CONSOLIDATED FROM: ./components/views/megadashboard/security/AccessControlsView.tsx ---
-
-import React, { useContext, useMemo, useState } from 'react';
+export default AccessControlsView;import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
 import Card from '../../../Card';
 import { DataContext } from '../../../../context/DataContext';
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
 import { AccessLog } from '../../../../types';
 
-const AccessControlsView: React.FC = () => {
-    const context = useContext(DataContext);
-    if (!context) throw new Error("AccessControlsView must be within a DataProvider");
-    
-    const { accessLogs } = context;
-    const [filter, setFilter] = useState<'all' | 'Success' | 'Failed'>('all');
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
 
-    const filteredLogs = useMemo(() => {
-        return accessLogs.filter(log => filter === 'all' || log.status === filter);
-    }, [accessLogs, filter]);
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
 
-    const kpiData = useMemo(() => ({
-        totalUsers: new Set(accessLogs.map(log => log.user)).size,
-        failedLogins24h: accessLogs.filter(log => log.status === 'Failed').length,
-        highRiskEvents: accessLogs.filter(log => log.riskLevel === 'High').length,
-    }), [accessLogs]);
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
 
-    const chartData = useMemo(() => {
-        const dataByHour: { [key: string]: { success: number, failed: number } } = {};
-        accessLogs.forEach(log => {
-            const hour = new Date(log.timestamp).getHours();
-            const key = `${String(hour).padStart(2, '0')}:00`;
-            if (!dataByHour[key]) dataByHour[key] = { success: 0, failed: 0 };
-            if (log.status === 'Success') dataByHour[key].success++;
-            else dataByHour[key].failed++;
-        });
-        return Object.entries(dataByHour).map(([hour, counts]) => ({ hour, ...counts })).sort((a,b) => a.hour.localeCompare(b.hour));
-    }, [accessLogs]);
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
 
-    const RiskBadge: React.FC<{ level: AccessLog['riskLevel'] }> = ({ level }) => {
-        const colors = {
-            'Low': 'bg-green-500/20 text-green-300',
-            'Medium': 'bg-yellow-500/20 text-yellow-300',
-            'High': 'bg-red-500/20 text-red-300',
-        };
-        return <span className={`px-2 py-1 text-xs font-medium rounded-full ${colors[level]}`}>{level}</span>;
-    };
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  isExportModalOpen: boolean;
+  currentPage: number;
+  rowsPerPage: number;
+  sortColumn: keyof ExtendedAccessLog;
+  sortDirection: 'asc' | 'desc';
+}
 
-    return (
-        <div className="space-y-6">
-            <h2 className="text-3xl font-bold text-white tracking-wider">Access Controls Dashboard</h2>
+export interface SecurityPolicyConfig {
+  id: string;
+  name: string;
+  description: string;
+  enabled: boolean;
+  severity: RiskLevelType;
+  category: 'Authentication' | 'Network' | 'Session' | 'Compliance';
+}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <Card className="text-center"><p className="text-3xl font-bold text-white">{kpiData.totalUsers}</p><p className="text-sm text-gray-400 mt-1">Total Users</p></Card>
-                <Card className="text-center"><p className="text-3xl font-bold text-white">25</p><p className="text-sm text-gray-400 mt-1">Active Roles</p></Card>
-                <Card className="text-center"><p className="text-3xl font-bold text-red-400">{kpiData.failedLogins24h}</p><p className="text-sm text-gray-400 mt-1">Failed Logins (24h)</p></Card>
-                <Card className="text-center"><p className="text-3xl font-bold text-orange-400">{kpiData.highRiskEvents}</p><p className="text-sm text-gray-400 mt-1">High-Risk Events (24h)</p></Card>
-            </div>
+export const INITIAL_SECURITY_POLICIES: SecurityPolicyConfig[] = [
+  { id: 'pol-1', name: 'Enforce Hardware MFA', description: 'Require WebAuthn or FIDO2 keys for administrative access.', enabled: true, severity: 'Critical', category: 'Authentication' },
+  { id: 'pol-2', name: 'Geo-Velocity Anomaly Check', description: 'Flag impossible travel sequences between successive login events.', enabled: true, severity: 'High', category: 'Network' },
+  { id: 'pol-3', name: 'Automatic Session Termination', description: 'Kill active sessions after 8 hours of continuous inactivity.', enabled: true, severity: 'Medium', category: 'Session' },
+  { id: 'pol-4', name: 'Strict IP Whitelisting', description: 'Restrict database cluster access to corporate VPN ranges.', enabled: false, severity: 'Critical', category: 'Compliance' },
+];
 
-            <Card title="Login Attempts (Last 24 hours)">
-                <ResponsiveContainer width="100%" height={300}>
-                    <LineChart data={chartData}>
-                        <XAxis dataKey="hour" stroke="#9ca3af" fontSize={12} />
-                        <YAxis stroke="#9ca3af" />
-                        <Tooltip contentStyle={{ backgroundColor: 'rgba(31, 41, 55, 0.8)', borderColor: '#4b5563' }} />
-                        <Legend />
-                        <Line type="monotone" dataKey="success" name="Successful" stroke="#10b981" dot={false} />
-                        <Line type="monotone" dataKey="failed" name="Failed" stroke="#ef4444" dot={false} />
-                    </LineChart>
-                </ResponsiveContainer>
-            </Card>
+export const RISK_LEVEL_COLORS: Record<RiskLevelType, { badge: string; text: string; border: string }> = {
+  Low: { badge: 'bg-green-500/20 text-green-300', text: 'text-green-400', border: 'border-green-500/30' },
+  Medium: { badge: 'bg-yellow-500/20 text-yellow-3
 
-            <Card>
-                <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-xl font-semibold text-white">Recent Access Events</h3>
-                     <div className="flex space-x-1 p-1 bg-gray-900/50 rounded-lg">
-                        {(['all', 'Success', 'Failed'] as const).map(status => (
-                            <button key={status} onClick={() => setFilter(status)} className={`px-3 py-1 text-sm rounded-md ${filter === status ? 'bg-cyan-600' : ''}`}>{status}</button>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
                         ))}
                     </div>
-                </div>
-                 <div className="overflow-x-auto">
-                    <table className="w-full text-sm text-left text-gray-400">
-                        <thead className="text-xs text-gray-300 uppercase bg-gray-900/30">
-                            <tr>
-                                <th scope="col" className="px-6 py-3">User</th>
-                                <th scope="col" className="px-6 py-3">IP Address</th>
-                                <th scope="col" className="px-6 py-3">Location</th>
-                                <th scope="col" className="px-6 py-3">Time</th>
-                                <th scope="col" className="px-6 py-3">Status</th>
-                                <th scope="col" className="px-6 py-3">Risk Level</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredLogs.map(log => (
-                                <tr key={log.id} className="border-b border-gray-800 hover:bg-gray-800/50">
-                                    <td className="px-6 py-4 font-medium text-white">{log.user}</td>
-                                    <td className="px-6 py-4 font-mono">{log.ip}</td>
-                                    <td className="px-6 py-4">{log.location}</td>
-                                    <td className="px-6 py-4">{log.timestamp}</td>
-                                    <td className="px-6 py-4"><span className={log.status === 'Success' ? 'text-green-400' : 'text-red-400'}>{log.status}</span></td>
-                                    <td className="px-6 py-4"><RiskBadge level={log.riskLevel} /></td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            </Card>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Password Rotations</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-cyan-400">14.2 Days</span>
+                                <p className="text-xs text-gray-500 mt-1">Average enterprise cycle</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Session Timeouts</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-yellow-400">15 Mins</span>
+                                <p className="text-xs text-gray-500 mt-1">Strict idle threshold</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="mt-6 pt-4 border-t border-gray-800 flex items-center justify-between text-xs text-gray-400">
+                        <span>Last automated compliance audit: Today at 04:00 UTC</span>
+                        <button 
+                            onClick={() => alert("Initiating manual security posture scan...")}
+                            className="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-white rounded-md transition-colors font-medium"
+                        >
+                            Run Audit Scan
+                        </button>
+                    </div>
+                </Card>
+            </div>
+        </div>
+    );
+};
+
+export default AccessControlsView;import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  isExportModalOpen: boolean;
+  currentPage: number;
+  rowsPerPage: number;
+  sortColumn: keyof ExtendedAccessLog;
+  sortDirection: 'asc' | 'desc';
+}
+
+export interface SecurityPolicyConfig {
+  id: string;
+  name: string;
+  description: string;
+  enabled: boolean;
+  severity: RiskLevelType;
+  category: 'Authentication' | 'Network' | 'Session' | 'Compliance';
+}
+
+export const INITIAL_SECURITY_POLICIES: SecurityPolicyConfig[] = [
+  { id: 'pol-1', name: 'Enforce Hardware MFA', description: 'Require WebAuthn or FIDO2 keys for administrative access.', enabled: true, severity: 'Critical', category: 'Authentication' },
+  { id: 'pol-2', name: 'Geo-Velocity Anomaly Check', description: 'Flag impossible travel sequences between successive login events.', enabled: true, severity: 'High', category: 'Network' },
+  { id: 'pol-3', name: 'Automatic Session Termination', description: 'Kill active sessions after 8 hours of continuous inactivity.', enabled: true, severity: 'Medium', category: 'Session' },
+  { id: 'pol-4', name: 'Strict IP Whitelisting', description: 'Restrict database cluster access to corporate VPN ranges.', enabled: false, severity: 'Critical', category: 'Compliance' },
+];
+
+export const RISK_LEVEL_COLORS: Record<RiskLevelType, { badge: string; text: string; border: string }> = {
+  Low: { badge: 'bg-green-500/20 text-green-300', text: 'text-green-400', border: 'border-green-500/30' },
+  Medium: { badge: 'bg-yellow-500/20 text-yellow-300', text: 'text-yellow-400', border: 'border-yellow-500
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Password Rotations</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-cyan-400">14.2 Days</span>
+                                <p className="text-xs text-gray-500 mt-1">Average enterprise cycle</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Session Timeouts</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-yellow-400">15 Mins</span>
+                                <p className="text-xs text-gray-500 mt-1">Strict idle threshold</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="mt-6 pt-4 border-t border-gray-800 flex items-center justify-between text-xs text-gray-400">
+                        <span>Last automated compliance audit: Today at 04:00 UTC</span>
+                        <button 
+                            onClick={() => alert("Initiating manual security posture scan...")}
+                            className="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-white rounded-md transition-colors font-medium"
+                        >
+                            Run Audit Scan
+                        </button>
+                    </div>
+                </Card>
+            </div>
+        </div>
+    );
+};
+
+export default AccessControlsView;import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  isExportModalOpen: boolean;
+  currentPage: number;
+  rowsPerPage: number;
+  sortColumn: keyof ExtendedAccessLog;
+  sortDirection: 'asc' | 'desc';
+}
+
+export interface SecurityPolicyConfig {
+  id: string;
+  name: string;
+  description: string;
+  enabled: boolean;
+  severity: RiskLevelType;
+  category: 'Authentication' | 'Network' | 'Session' | 'Compliance';
+}
+
+export const INITIAL_SECURITY_POLICIES: SecurityPolicyConfig[] = [
+  { id: 'pol-1', name: 'Enforce Hardware MFA', description: 'Require WebAuthn or FIDO2 keys for administrative access.', enabled: true, severity: 'Critical', category: 'Authentication' },
+  { id: 'pol-2', name: 'Geo-Velocity Anomaly Check', description: 'Flag impossible travel sequences between successive login events.', enabled: true, severity: 'High', category: 'Network' },
+  { id: 'pol-3', name: 'Automatic Session Termination', description: 'Kill active sessions after 8 hours of continuous inactivity.', enabled: true, severity: 'Medium', category: 'Session' },
+  { id: 'pol-4', name: 'Strict IP Whitelisting', description: 'Restrict database cluster access to corporate VPN ranges.', enabled: false, severity: 'Critical', category: 'Compliance' },
+];
+
+export const RISK_LEVEL_COLORS: Record<RiskLevelType, { badge: string; text: string; border: string }> = {
+  Low: { badge: 'bg-green-500/20 text-green-300', text: 'text-green-400', border: 'border-green-500/30' },
+  Medium: { badge: 'bg-yellow-500/20 text-yellow-300', text: 'text-yellow-400', border: 'border-yellow-500/30' },
+  High: { badge: 'bg-orange-500/20 text
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Password Rotations</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-cyan-400">14.2 Days</span>
+                                <p className="text-xs text-gray-500 mt-1">Average enterprise cycle</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Session Timeouts</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-yellow-400">15 Mins</span>
+                                <p className="text-xs text-gray-500 mt-1">Strict idle threshold</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="mt-6 pt-4 border-t border-gray-800 flex items-center justify-between text-xs text-gray-400">
+                        <span>Last automated compliance audit: Today at 04:00 UTC</span>
+                        <button 
+                            onClick={() => alert("Initiating manual security posture scan...")}
+                            className="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-white rounded-md transition-colors font-medium"
+                        >
+                            Run Audit Scan
+                        </button>
+                    </div>
+                </Card>
+            </div>
+        </div>
+    );
+};
+
+export default AccessControlsView;import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  isExportModalOpen: boolean;
+  currentPage: number;
+  rowsPerPage: number;
+  sortColumn: keyof ExtendedAccessLog;
+  sortDirection: 'asc' | 'desc';
+}
+
+export interface SecurityPolicyConfig {
+  id: string;
+  name: string;
+  description: string;
+  enabled: boolean;
+  severity: RiskLevelType;
+  category: 'Authentication' | 'Network' | 'Session' | 'Compliance';
+}
+
+export const INITIAL_SECURITY_POLICIES: SecurityPolicyConfig[] = [
+  { id: 'pol-1', name: 'Enforce Hardware MFA', description: 'Require WebAuthn or FIDO2 keys for administrative access.', enabled: true, severity: 'Critical', category: 'Authentication' },
+  { id: 'pol-2', name: 'Geo-Velocity Anomaly Check', description: 'Flag impossible travel sequences between successive login events.', enabled: true, severity: 'High', category: 'Network' },
+  { id: 'pol-3', name: 'Automatic Session Termination', description: 'Kill active sessions after 8 hours of continuous inactivity.', enabled: true, severity: 'Medium', category: 'Session' },
+  { id: 'pol-4', name: 'Strict IP Whitelisting', description: 'Restrict database cluster access to corporate VPN ranges.', enabled: false, severity: 'Critical', category: 'Compliance' },
+];
+
+export const RISK_LEVEL_COLORS: Record<RiskLevelType, { badge: string; text: string; border: string }> = {
+  Low: { badge: 'bg-green-500/20 text-green-300', text: 'text-green-400', border: 'border-green-500/30' },
+  Medium: { badge: 'bg-yellow-500/20 text-yellow-300', text: 'text-yellow-400', border: 'border-yellow-500/30' },
+  High: { badge: 'bg-orange-500/20 text-orange-300', text: 'text-orange-400', border: 'border-orange
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Password Rotations</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-cyan-400">14.2 Days</span>
+                                <p className="text-xs text-gray-500 mt-1">Average enterprise cycle</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Session Timeouts</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-yellow-400">15 Mins</span>
+                                <p className="text-xs text-gray-500 mt-1">Strict idle threshold</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="mt-6 pt-4 border-t border-gray-800 flex items-center justify-between text-xs text-gray-400">
+                        <span>Last automated compliance audit: Today at 04:00 UTC</span>
+                        <button 
+                            onClick={() => alert("Initiating manual security posture scan...")}
+                            className="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-white rounded-md transition-colors font-medium"
+                        >
+                            Run Audit Scan
+                        </button>
+                    </div>
+                </Card>
+            </div>
+        </div>
+    );
+};
+
+export default AccessControlsView;import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  isExportModalOpen: boolean;
+  currentPage: number;
+  rowsPerPage: number;
+  sortColumn: keyof ExtendedAccessLog;
+  sortDirection: 'asc' | 'desc';
+}
+
+export interface SecurityPolicyConfig {
+  id: string;
+  name: string;
+  description: string;
+  enabled: boolean;
+  severity: RiskLevelType;
+  category: 'Authentication' | 'Network' | 'Session' | 'Compliance';
+}
+
+export const INITIAL_SECURITY_POLICIES: SecurityPolicyConfig[] = [
+  { id: 'pol-1', name: 'Enforce Hardware MFA', description: 'Require WebAuthn or FIDO2 keys for administrative access.', enabled: true, severity: 'Critical', category: 'Authentication' },
+  { id: 'pol-2', name: 'Geo-Velocity Anomaly Check', description: 'Flag impossible travel sequences between successive login events.', enabled: true, severity: 'High', category: 'Network' },
+  { id: 'pol-3', name: 'Automatic Session Termination', description: 'Kill active sessions after 8 hours of continuous inactivity.', enabled: true, severity: 'Medium', category: 'Session' },
+  { id: 'pol-4', name: 'Strict IP Whitelisting', description: 'Restrict database cluster access to corporate VPN ranges.', enabled: false, severity: 'Critical', category: 'Compliance' },
+];
+
+export const RISK_LEVEL_COLORS: Record<RiskLevelType, { badge: string; text: string; border: string }> = {
+  Low: { badge: 'bg-green-500/20 text-green-300', text: 'text-green-400', border: 'border-green-500/30' },
+  Medium: { badge: 'bg-yellow-500/20 text-yellow-300', text: 'text-yellow-400', border: 'border-yellow-500/30' },
+  High: { badge: 'bg-orange-500/20 text-orange-300', text: 'text-orange-400', border: 'border-orange-500/30' },
+  Critical: { badge: 'bg-red-500
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Password Rotations</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-cyan-400">14.2 Days</span>
+                                <p className="text-xs text-gray-500 mt-1">Average enterprise cycle</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Session Timeouts</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-yellow-400">15 Mins</span>
+                                <p className="text-xs text-gray-500 mt-1">Strict idle threshold</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="mt-6 pt-4 border-t border-gray-800 flex items-center justify-between text-xs text-gray-400">
+                        <span>Last automated compliance audit: Today at 04:00 UTC</span>
+                        <button 
+                            onClick={() => alert("Initiating manual security posture scan...")}
+                            className="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-white rounded-md transition-colors font-medium"
+                        >
+                            Run Audit Scan
+                        </button>
+                    </div>
+                </Card>
+            </div>
+        </div>
+    );
+};
+
+export default AccessControlsView;import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  isExportModalOpen: boolean;
+  currentPage: number;
+  rowsPerPage: number;
+  sortColumn: keyof ExtendedAccessLog;
+  sortDirection: 'asc' | 'desc';
+}
+
+export interface SecurityPolicyConfig {
+  id: string;
+  name: string;
+  description: string;
+  enabled: boolean;
+  severity: RiskLevelType;
+  category: 'Authentication' | 'Network' | 'Session' | 'Compliance';
+}
+
+export const INITIAL_SECURITY_POLICIES: SecurityPolicyConfig[] = [
+  { id: 'pol-1', name: 'Enforce Hardware MFA', description: 'Require WebAuthn or FIDO2 keys for administrative access.', enabled: true, severity: 'Critical', category: 'Authentication' },
+  { id: 'pol-2', name: 'Geo-Velocity Anomaly Check', description: 'Flag impossible travel sequences between successive login events.', enabled: true, severity: 'High', category: 'Network' },
+  { id: 'pol-3', name: 'Automatic Session Termination', description: 'Kill active sessions after 8 hours of continuous inactivity.', enabled: true, severity: 'Medium', category: 'Session' },
+  { id: 'pol-4', name: 'Strict IP Whitelisting', description: 'Restrict database cluster access to corporate VPN ranges.', enabled: false, severity: 'Critical', category: 'Compliance' },
+];
+
+export const RISK_LEVEL_COLORS: Record<RiskLevelType, { badge: string; text: string; border: string }> = {
+  Low: { badge: 'bg-green-500/20 text-green-300', text: 'text-green-400', border: 'border-green-500/30' },
+  Medium: { badge: 'bg-yellow-500/20 text-yellow-300', text: 'text-yellow-400', border: 'border-yellow-500/30' },
+  High: { badge: 'bg-orange-500/20 text-orange-300', text: 'text-orange-400', border: 'border-orange-500/30' },
+  Critical: { badge: 'bg-red-500/20 text-red-300', text: 'text-red-400', border:
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Password Rotations</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-cyan-400">14.2 Days</span>
+                                <p className="text-xs text-gray-500 mt-1">Average enterprise cycle</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Session Timeouts</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-yellow-400">15 Mins</span>
+                                <p className="text-xs text-gray-500 mt-1">Strict idle threshold</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="mt-6 pt-4 border-t border-gray-800 flex items-center justify-between text-xs text-gray-400">
+                        <span>Last automated compliance audit: Today at 04:00 UTC</span>
+                        <button 
+                            onClick={() => alert("Initiating manual security posture scan...")}
+                            className="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-white rounded-md transition-colors font-medium"
+                        >
+                            Run Audit Scan
+                        </button>
+                    </div>
+                </Card>
+            </div>
+        </div>
+    );
+};
+
+export default AccessControlsView;import React, { useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import Card from '../../../Card';
+import { DataContext } from '../../../../context/DataContext';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, 
+  CartesianGrid, AreaChart, Area, BarChart, Bar 
+} from 'recharts';
+import { AccessLog } from '../../../../types';
+
+export type LogFilterStatus = 'all' | 'Success' | 'Failed' | 'Warning' | 'Pending';
+export type RiskLevelType = 'Low' | 'Medium' | 'High' | 'Critical';
+export type TimeRangeFilter = '1h' | '24h' | '7d' | '30d' | 'all';
+export type ViewMode = 'table' | 'grid' | 'analytics' | 'audit';
+
+export interface ExtendedAccessLog extends AccessLog {
+  deviceType?: string;
+  userAgent?: string;
+  authMethod?: 'MFA' | 'Password' | 'SSO' | 'Biometric' | 'API_KEY';
+  sessionDurationSec?: number;
+  department?: string;
+  metadata?: Record<string, string | number | boolean>;
+}
+
+export interface AccessControlMetrics {
+  totalUsers: number;
+  activeRolesCount: number;
+  failedLogins24h: number;
+  highRiskEvents: number;
+  mfaAdoptionRate: number;
+  averageSessionLengthMinutes: number;
+  activeSessionsNow: number;
+  securityScore: number;
+}
+
+export interface HourlyChartPoint {
+  hour: string;
+  success: number;
+  failed: number;
+  warning: number;
+  timestampEpoch: number;
+}
+
+export interface AccessControlsViewState {
+  filter: LogFilterStatus;
+  timeRange: TimeRangeFilter;
+  searchQuery: string;
+  selectedRole: string;
+  selectedDepartment: string;
+  riskFilter: RiskLevelType | 'all';
+  viewMode: ViewMode;
+  selectedLogIds: string[];
+  isAdvancedFiltersOpen: boolean;
+  isExportModalOpen: boolean;
+  currentPage: number;
+  rowsPerPage: number;
+  sortColumn: keyof ExtendedAccessLog;
+  sortDirection: 'asc' | 'desc';
+}
+
+export interface SecurityPolicyConfig {
+  id: string;
+  name: string;
+  description: string;
+  enabled: boolean;
+  severity: RiskLevelType;
+  category: 'Authentication' | 'Network' | 'Session' | 'Compliance';
+}
+
+export const INITIAL_SECURITY_POLICIES: SecurityPolicyConfig[] = [
+  { id: 'pol-1', name: 'Enforce Hardware MFA', description: 'Require WebAuthn or FIDO2 keys for administrative access.', enabled: true, severity: 'Critical', category: 'Authentication' },
+  { id: 'pol-2', name: 'Geo-Velocity Anomaly Check', description: 'Flag impossible travel sequences between successive login events.', enabled: true, severity: 'High', category: 'Network' },
+  { id: 'pol-3', name: 'Automatic Session Termination', description: 'Kill active sessions after 8 hours of continuous inactivity.', enabled: true, severity: 'Medium', category: 'Session' },
+  { id: 'pol-4', name: 'Strict IP Whitelisting', description: 'Restrict database cluster access to corporate VPN ranges.', enabled: false, severity: 'Critical', category: 'Compliance' },
+];
+
+export const RISK_LEVEL_COLORS: Record<RiskLevelType, { badge: string; text: string; border: string }> = {
+  Low: { badge: 'bg-green-500/20 text-green-300', text: 'text-green-400', border: 'border-green-500/30' },
+  Medium: { badge: 'bg-yellow-500/20 text-yellow-300', text: 'text-yellow-400', border: 'border-yellow-500/30' },
+  High: { badge: 'bg-orange-500/20 text-orange-300', text: 'text-orange-400', border: 'border-orange-500/30' },
+  Critical: { badge: 'bg-red-500/20 text-red-300', text: 'text-red-400', border: 'border-red-500/30' },
+};
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card title="Active Role Distribution" className="lg:col-span-1">
+                    <div className="space-y-4 py-2">
+                        {[
+                            { role: 'Administrator', count: 3, percentage: '12%', color: 'bg-red-500' },
+                            { role: 'Security Officer', count: 5, percentage: '20%', color: 'bg-orange-500' },
+                            { role: 'Auditor', count: 7, percentage: '28%', color: 'bg-yellow-500' },
+                            { role: 'Standard User', count: 10, percentage: '40%', color: 'bg-cyan-500' },
+                        ].map(item => (
+                            <div key={item.role} className="space-y-1">
+                                <div className="flex justify-between text-xs text-gray-300">
+                                    <span className="font-medium text-white">{item.role}</span>
+                                    <span>{item.count} users ({item.percentage})</span>
+                                </div>
+                                <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div className={`${item.color} h-full rounded-full transition-all duration-500`} style={{ width: item.percentage }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+
+                <Card title="Security Compliance Metrics" className="lg:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">MFA Enforced</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-green-400">98.4%</span>
+                                <p className="text-xs text-gray-500 mt-1">492 of 500 active accounts</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Password Rotations</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-cyan-400">14.2 Days</span>
+                                <p className="text-xs text-gray-500 mt-1">Average enterprise cycle</p>
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-900/60 rounded-lg border border-gray-800 flex flex-col justify-between">
+                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Session Timeouts</span>
+                            <div className="mt-4">
+                                <span className="text-2xl font-bold text-yellow-400">15 Mins</span>
+                                <p className="text-xs text-gray-500 mt-1">Strict idle threshold</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="mt-6 pt-4 border-t border-gray-800 flex items-center justify-between text-xs text-gray-400">
+                        <span>Last automated compliance audit: Today at 04:00 UTC</span>
+                        <button 
+                            onClick={() => alert("Initiating manual security posture scan...")}
+                            className="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-white rounded-md transition-colors font-medium"
+                        >
+                            Run Audit Scan
+                        </button>
+                    </div>
+                </Card>
+            </div>
         </div>
     );
 };
